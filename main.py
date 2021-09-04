@@ -1,3 +1,6 @@
+import sys
+
+
 def communication(text): # общение
     hello = ('привет')
     goodbye = ('пока')
@@ -9,16 +12,50 @@ def communication(text): # общение
             print('привет')
         elif word in goodbye:
             print('пока')
+            sys.exit()
         elif word in thanks:
             print('пожалуйста')
         elif word in how_are_you:
             print('отлично')
 
 
+def math(text): # математика
+    for word in text:
+        if word in black_list:
+            text.remove(word)
+
+    num = []
+    multi = ('умнож', 'умножить', '*')
+    division = ('подели', 'раздели', '/')
+    summ = ('плюс', '+')
+    sub = ('минус', '-')
+
+    for word in text:
+        if word.isdigit():
+            num.append(int(word))
+    text.remove(str(num[0]))
+    text.remove(str(num[1]))
+
+    if text[0] in multi:
+        res = num[0] * num[1]
+        print(res)
+    elif text[0] in division:
+        res = num[0] / num[1]
+        print(res)
+    elif text[0] in summ:
+        res = num[0] + num[1]
+        print(res)
+    elif text[0] in sub:
+        res = num[0] - num[1]
+        print(res)
+
 
 commands = {
-    ('привет', 'пока', 'спасибо', 'дела'): communication
+    ('привет', 'пока', 'спасибо', 'дела'): communication,
+    ('+', '-', '*', '/', 'плюс', 'минус', 'умнож', 'умножить', 'подели', 'раздели'): math
 }
+
+black_list = ('на', 'пожалуйста')
 
 
 def search_command(command):  # поиск по списку команд
@@ -32,14 +69,8 @@ def search_command(command):  # поиск по списку команд
                 break
 
 
-
-
 print('Привет! Я Керолайн, твой персональний голосовой асистент. Спрашивай! ')
-
 
 while True:
     user_command = input()
     search_command(user_command)
-
-
-
