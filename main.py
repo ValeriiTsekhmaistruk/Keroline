@@ -31,27 +31,25 @@ class Commands:
     @staticmethod
     def search_google(text):  # поиск в google
         text.pop(0)
-        search_trem = ' '.join(text)
-        url = 'https://google.com/search?q=' + search_trem
+        search_query = ' '.join(text)
+        url = 'https://google.com/search?q=' + search_query
         print('вот что есть:')
         webbrowser.get().open(url)
 
     @staticmethod
-    def say_time(text):
-        black_list = ('скажи', 'пожалуйста', 'который', 'какой',
-                      'сейчас', 'какое', 'который', 'сколько',
-                      'сегодня', 'который', 'назови', 'недели')
-        clear_text = list(filter(lambda item: item not in black_list, text))
+    def say_time(text):  # время
+        time_word = ('время', 'времени', 'час', 'часов')
+        date_word = ('дата', 'число', 'дату')
 
-        if clear_text[0] in ('время', 'времени', 'час', 'часов'):
+        if bool(set(time_word) & set(text)):
             print(time.strftime('%H:%M', time.localtime()))
-        elif clear_text[0] in ('дата', 'число', 'дату'):
+        elif bool(set(date_word) & set(text)):
             print(time.strftime('%m.%d.%Y', time.localtime()))
-        elif clear_text[0] in ('день'):
+        elif 'день' in text:
             print(time.strftime('%A', time.localtime()))
 
     @staticmethod
-    def get_weather(text):
+    def get_weather(text):  # погода
         black_list = ('покажи', 'прогноз', 'в', 'погода', 'погоду', 'погоды')
         clear_text = list(filter(lambda item: item not in black_list, text))
 
@@ -70,41 +68,38 @@ class Mathematics:
 
     @staticmethod
     def simple_math(text):  # математика
-        black_list = ('на', 'пожалуйста', 'сколько', 'будет')
-        clear_text = list(filter(lambda item: item not in black_list, text))
-        num = []
+        multi_word = ('умнож', 'умножить', '*')
+        div_word = ('подели', 'раздели', '/')
+        sum_word = ('плюс', '+')
+        sub_word = ('минус', '-')
+        num = list(map(int, filter(lambda x: x.isdigit(), text)))
 
-        try:
-            for word in clear_text:
-                if word.isdigit():
-                    num.append(int(word))
-            clear_text.remove(str(num[0]))
-            clear_text.remove(str(num[1]))
-        except IndexError:
-            print('Ошибка в данних')
-            return
-        if clear_text[0] in ('умнож', 'умножить', '*'):
-            res = num[0] * num[1]
-            print(res)
-        elif clear_text[0] in ('подели', 'раздели', '/'):
-            res = 0
-            try:
-                res = num[0] / num[1]
-            except ZeroDivisionError:
-                print('Нельзя делить на 0!')
+        if bool(set(multi_word) & set(text)):
+            print(num[0] * num[1])
+        elif bool(set(div_word) & set(text)):
+            if num[1] == 0:
+                print('Делить на 0 нельзя!!!')
             else:
-                print(res)
-        elif clear_text[0] in ('плюс', '+'):
-            res = num[0] + num[1]
-            print(res)
-        elif clear_text[0] in ('минус', '-'):
-            res = num[0] - num[1]
-            print(res)
+                print(num[0] / num[1])
+        elif bool(set(sum_word) & set(text)):
+            print(num[0] + num[1])
+        elif bool(set(sub_word) & set(text)):
+            print(num[0] - num[1])
 
     @staticmethod
-    def math_sqrt(text):
-        num = list(filter(lambda x: x.isdigit(), text))
-        print(math.sqrt(int(num[0])))
+    def math_sqrt(text):  # математический корень
+        num = list(map(int, filter(lambda x: x.isdigit(), text)))
+        print(math.sqrt(num[0]))
+
+    @staticmethod
+    def math_exp(text):
+        num = list(map(int, filter(lambda x: x.isdigit(), text)))
+        if 'квадрат' in text:
+            print(num[0]**2)
+        elif 'куб' in text:
+            print(num[0]**3)
+        else:
+            print(num[0]**num[1])
 
 
 commands = {
@@ -114,6 +109,7 @@ commands = {
     ('погода', 'погоду', 'погоды'): Commands.get_weather,
     ('+', '-', '*', '/', 'плюс', 'минус', 'умнож', 'умножить', 'подели', 'раздели'): Mathematics.simple_math,
     'корень': Mathematics.math_sqrt,
+    ('степень', 'степени', 'квадрат', 'куб'): Mathematics.math_exp
     }
 
 
