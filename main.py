@@ -2,11 +2,29 @@ import sys
 import webbrowser
 import math
 import time
+import pyttsx3
 
 
 class Assistant:
     name = 'Керолайн'
     city = 'Николаев'
+    voice = False
+
+
+class Voice:
+
+    def __init__(self):
+        pass
+
+    @staticmethod
+    def say(string):
+        match Assistant.voice:
+            case True:
+                engine = pyttsx3.init()
+                engine.say(string)
+                engine.runAndWait()
+            case _:
+                return
 
 
 class Commands:
@@ -16,17 +34,28 @@ class Commands:
 
     @staticmethod
     def communication(text):  # общение
+        hi_words = ('привет', 'приветствую')
+        bye_words = ('пока', 'прощай')
+        ths_words = ('спасибо', 'благодарю')
+        info_words = ('кто', 'ты')
+        command_words = ('делаешь', 'умеешь', 'можешь')
 
-        for word in text:
-            if word in 'привет':
-                print('привет')
-            elif word in 'пока':
-                print('пока')
-                sys.exit()
-            elif word in 'спасибо':
-                print('пожалуйста')
-            elif word in 'дела':
-                print('отлично')
+        if bool(set(hi_words) & set(text)):
+            print('привет')
+            Voice.say('привет')
+        elif bool(set(bye_words) & set(text)):
+            print('пока')
+            Voice.say('пока')
+            sys.exit()
+        elif bool(set(ths_words) & set(text)):
+            print('пожалуйста')
+            Voice.say('пожалуйста')
+        elif bool(set(info_words) & set(text)):
+            print('Я Керолайн, ваш личный голосовой ассистент')
+            Voice.say('Я Керолайн, ваш личный голосовой ассистент')
+        elif bool(set(command_words) & set(text)):
+            print('Затрудняюсь ответить, меня постоянно улучшают')
+            Voice.say('Затрудняюсь ответить, меня постоянно улучшают')
 
     @staticmethod
     def search_google(text):  # поиск в google
@@ -34,6 +63,7 @@ class Commands:
         search_query = ' '.join(text)
         url = 'https://google.com/search?q=' + search_query
         print('вот что есть:')
+        Voice.say('вот что есть:')
         webbrowser.get().open(url)
 
     @staticmethod
@@ -43,10 +73,13 @@ class Commands:
 
         if bool(set(time_word) & set(text)):
             print(time.strftime('%H:%M', time.localtime()))
+            Voice.say(time.strftime('%H:%M', time.localtime()))
         elif bool(set(date_word) & set(text)):
             print(time.strftime('%m.%d.%Y', time.localtime()))
+            Voice.say(time.strftime('%m.%d.%Y', time.localtime()))
         elif 'день' in text:
             print(time.strftime('%A', time.localtime()))
+            Voice.say(time.strftime('%A', time.localtime()))
 
     @staticmethod
     def get_weather(text):  # погода
@@ -73,37 +106,48 @@ class Mathematics:
         sum_word = ('плюс', '+')
         sub_word = ('минус', '-')
         num = list(map(int, filter(lambda x: x.isdigit(), text)))
+        result = None
 
         if bool(set(multi_word) & set(text)):
-            print(num[0] * num[1])
+            result = (num[0] * num[1])
         elif bool(set(div_word) & set(text)):
             if num[1] == 0:
-                print('Делить на 0 нельзя!!!')
+                result = 'Делить на 0 нельзя!!!'
             else:
-                print(num[0] / num[1])
+                result = (num[0] / num[1])
         elif bool(set(sum_word) & set(text)):
-            print(num[0] + num[1])
+            result = (num[0] + num[1])
         elif bool(set(sub_word) & set(text)):
-            print(num[0] - num[1])
+            result = (num[0] - num[1])
+
+        print(result)
+        Voice.say(result)
 
     @staticmethod
     def math_sqrt(text):  # математический корень
         num = list(map(int, filter(lambda x: x.isdigit(), text)))
-        print(math.sqrt(num[0]))
+        result = math.sqrt(num[0])
+        print(result)
+        Voice.say(result)
 
     @staticmethod
     def math_exp(text):
         num = list(map(int, filter(lambda x: x.isdigit(), text)))
+        result = None
         if 'квадрат' in text:
-            print(num[0]**2)
+            result = (num[0]**2)
         elif 'куб' in text:
-            print(num[0]**3)
+            result = (num[0]**3)
         else:
-            print(num[0]**num[1])
+            result = (num[0]**num[1])
+
+        print(result)
+        Voice.say(result)
 
 
 commands = {
-    ('привет', 'пока', 'спасибо', 'дела'): Commands.communication,
+    ('привет', 'приветствую', 'пока', 'прощай', 'спасибо', 'благодарю',
+     'делаешь', 'умеешь', 'можешь', 'кто', 'ты'): Commands.communication,
     ('найди', 'поищи'): Commands.search_google,
     ('время', 'времени', 'час', 'часов', 'дата', 'число', 'дату', 'день'): Commands.say_time,
     ('погода', 'погоду', 'погоды'): Commands.get_weather,
@@ -125,7 +169,8 @@ def search_command(command):  # поиск по списку команд
 
 
 if __name__ == '__main__':
-    print('Привет! Я Керолайн, твой персональний голосовой асистент. Спрашивай! ')
+    print('Привет! Я Кэролайн, ваш личный голосовой ассистент. Спрашивай! ')
+    Voice.say('Привет! Я Кэролайн, ваш личный голосовой ассистент. Спрашивай! ')
     while True:
         user_command = input()
         search_command(user_command)
