@@ -3,12 +3,13 @@ import webbrowser
 import math
 import time
 import pyttsx3
+from collections import namedtuple
 
 
 class Assistant:
-    name = 'Керолайн'
+    name = 'Кэролайн'
     city = 'Николаев'
-    voice = False
+    voice = True
 
 
 class Voice:
@@ -29,9 +30,6 @@ class Voice:
 
 class Commands:
 
-    def __init__(self):
-        pass
-
     @staticmethod
     def communication(text):  # общение
         hi_words = ('привет', 'приветствую')
@@ -51,8 +49,8 @@ class Commands:
             print('пожалуйста')
             Voice.say('пожалуйста')
         elif bool(set(info_words) & set(text)):
-            print('Я Керолайн, ваш личный голосовой ассистент')
-            Voice.say('Я Керолайн, ваш личный голосовой ассистент')
+            print(f'Я {Assistant.name}, ваш личный голосовой ассистент')
+            Voice.say(f'Я {Assistant.name}, ваш личный голосовой ассистент')
         elif bool(set(command_words) & set(text)):
             print('Затрудняюсь ответить, меня постоянно улучшают')
             Voice.say('Затрудняюсь ответить, меня постоянно улучшают')
@@ -96,9 +94,6 @@ class Commands:
 
 class Mathematics:
 
-    def __init__(self):
-        pass
-
     @staticmethod
     def simple_math(text):  # математика
         multi_word = ('умнож', 'умножить', '*')
@@ -133,7 +128,6 @@ class Mathematics:
     @staticmethod
     def math_exp(text):
         num = list(map(int, filter(lambda x: x.isdigit(), text)))
-        result = None
         if 'квадрат' in text:
             result = (num[0]**2)
         elif 'куб' in text:
@@ -145,32 +139,41 @@ class Mathematics:
         Voice.say(result)
 
 
-commands = {
-    ('привет', 'приветствую', 'пока', 'прощай', 'спасибо', 'благодарю',
-     'делаешь', 'умеешь', 'можешь', 'кто', 'ты'): Commands.communication,
-    ('найди', 'поищи'): Commands.search_google,
-    ('время', 'времени', 'час', 'часов', 'дата', 'число', 'дату', 'день'): Commands.say_time,
-    ('погода', 'погоду', 'погоды'): Commands.get_weather,
-    ('+', '-', '*', '/', 'плюс', 'минус', 'умнож', 'умножить', 'подели', 'раздели'): Mathematics.simple_math,
-    'корень': Mathematics.math_sqrt,
-    ('степень', 'степени', 'квадрат', 'куб'): Mathematics.math_exp
-    }
+class KeyWord:
+    key_word = namedtuple('key_word', 'words func')
+
+    communication = key_word(('привет', 'приветствую', 'пока', 'прощай', 'спасибо', 'благодарю', 'делаешь',
+                              'умеешь', 'можешь', 'кто', 'ты'), Commands.communication)
+    search_google = key_word(('найди', 'поищи'), Commands.search_google)
+    say_time = key_word(('время', 'времени', 'час', 'часов', 'дата', 'число', 'дату', 'день'), Commands.say_time)
+    get_weather = key_word(('погода', 'погоду', 'погоды'), Commands.get_weather)
+    simple_math = key_word(('+', '-', '*', '/', 'плюс', 'минус', 'умнож', 'умножить',
+                            'подели', 'раздели'), Mathematics.simple_math)
+    math_sqrt = key_word(('корень', ''), Mathematics.math_sqrt)
+    math_exp = key_word(('степень', 'степени', 'квадрат', 'куб'), Mathematics.math_exp)
+
+    key_words = (communication, search_google, say_time, get_weather, simple_math, math_sqrt, math_exp)
 
 
-def search_command(command):  # поиск по списку команд
+def search_command(command):
     text = command.lower()
     text = text.split(" ")
 
-    for key in commands.keys():
-        for word in text:
-            if word in key:
-                commands[key](text)
-                break
+    def search(words, i=0):
+        if i <= len(words) - 1:
+            if set(words[i][0]) & set(text):
+                words[i][1](text)
+            else:
+                search(words, i+1)
+        else:
+            print('Неизвестная команда')
+            Voice.say('Неизвестная команда')
+    search(KeyWord.key_words)
 
 
 if __name__ == '__main__':
-    print('Привет! Я Кэролайн, ваш личный голосовой ассистент. Спрашивай! ')
-    Voice.say('Привет! Я Кэролайн, ваш личный голосовой ассистент. Спрашивай! ')
+    print(f'Привет! Я {Assistant.name}, ваш личный голосовой ассистент. Спрашивай! ')
+    Voice.say(f'Привет! Я {Assistant.name}, ваш личный голосовой ассистент. Спрашивай! ')
     while True:
         user_command = input()
         search_command(user_command)
