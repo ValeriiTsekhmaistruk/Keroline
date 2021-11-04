@@ -166,58 +166,63 @@ class Commands:
 
     @staticmethod
     def run_app(text):
-        if len(text) < 2:
+        black_list = ('открой', 'запусти', 'пожалуйста', 'будь', 'добра')
+        clear_text = list(filter(lambda item: item not in black_list, text))
+
+        if len(clear_text) == 0:
             Assistant.answer = 'Укажите приложение'
             Voice.say('Укажите приложение')
             return
 
-        app_list = ('telegram', 'spotify', 'офис', 'браузер')
-        clear_text = list(filter(lambda item: item in app_list, text))
+        try:
+            spotify = ('spotify', Assistant.spotify)
+            telegram = ('telegram', Assistant.telegram)
+            browser = ('браузер', Assistant.browser)
+            office = ('офис', Assistant.office)
 
-        if len(clear_text) == 0:
+            apps = (spotify, telegram, browser, office)
+
+            for app in apps:
+                if clear_text[0] == app[0]:
+                    if app[1] == '':
+                        Assistant.answer = 'Приложение не установленно'
+                        Voice.say('Приложение не установленно')
+                        return
+                    else:
+                        answer = random.choice(Assistant.answers.get('execution'))
+                        Assistant.answer = answer
+                        Voice.say(answer)
+                        os.startfile(app[1])
+                        return
+
             Assistant.answer = 'Приложение не найденно'
             Voice.say('Приложение не найденно')
-            return
 
-        def sey(x):
-            if x:
-                answer = random.choice(Assistant.answers.get('execution'))
-                Assistant.answer = answer
-                Voice.say(answer)
-            else:
-                Assistant.answer = 'Приложение не установленно'
-                Voice.say('Приложение не установленно')
-        try:
-            if clear_text[0] == 'spotify':
-                if Assistant.spotify == '':
-                    sey(False)
-                    return
-                os.startfile(Assistant.spotify)
-                sey(True)
-
-            if clear_text[0] == 'telegram':
-                if Assistant.telegram == '':
-                    sey(False)
-                    return
-                os.startfile(Assistant.telegram)
-                sey(True)
-
-            if clear_text[0] == 'офис':
-                if Assistant.office == '':
-                    sey(False)
-                    return
-                os.startfile(Assistant.office)
-                sey(True)
-
-            if clear_text[0] == 'браузер':
-                if Assistant.browser == '':
-                    sey(False)
-                    return
-                os.startfile(Assistant.browser)
-                sey(True)
         except FileNotFoundError:
             Assistant.answer = 'Указан неверный путь к приложению'
             Voice.say('Указан неверный путь к приложению')
+
+    @staticmethod
+    def coin(x):
+        flip = round(random.random())
+
+        if flip == 1:
+            Assistant.answer = 'Орёл'
+            Voice.say('Орёл')
+        else:
+            Assistant.answer = 'Решка'
+            Voice.say('Решка')
+
+    @staticmethod
+    def yes_or_no(x):
+        rand_answer = round(random.random())
+
+        if rand_answer == 1:
+            Assistant.answer = 'Да'
+            Voice.say('Да')
+        else:
+            Assistant.answer = 'Нет'
+            Voice.say('Нет')
 
 
 class Mathematics:
@@ -315,8 +320,11 @@ class KeyWord:
     math_sqrt = key_word(('корень', 'корень'), Mathematics.math_sqrt)
     math_exp = key_word(('степень', 'степени', 'квадрат', 'куб'), Mathematics.math_exp)
     run_app = key_word(('включи', 'запусти', 'открой'), Commands.run_app)
+    coin = key_word(('монетка', 'монетку', 'монета', 'монету'), Commands.coin)
+    yes_or_no = key_word(('да', 'нет'), Commands.yes_or_no)
 
-    key_words = (communication, search_google, say_time, get_weather, simple_math, math_sqrt, math_exp, run_app)
+    key_words = (search_google, simple_math, math_sqrt, math_exp, communication, say_time, get_weather, run_app, coin,
+                 yes_or_no)
 
 
 def search_command(command):
@@ -341,7 +349,6 @@ def input_text(user_command):
     if len(user_command.replace(' ', '')) == 0:
         return
     search_command(user_command)
-    print(Assistant.voice)
     return Assistant.answer
 
 

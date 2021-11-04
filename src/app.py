@@ -117,13 +117,13 @@ class KerolineApp(App):
         setting_menu_content_bl.add_widget(setting_menu_btn_bl)
 
         def enter_on(instance):
-            answer = main.input_text(instance.text)
+            answer = main.input_text(instance.text.strip())
             if answer:
                 self.text_label.text = str(answer)
             instance.text = ''
 
         def send_btn_on(instance):
-            answer = main.input_text(self.send_input.text)
+            answer = main.input_text(self.send_input.text.strip())
             if answer:
                 self.text_label.text = str(answer)
             self.send_input.text = ''
