@@ -1,8 +1,8 @@
 {
-    "city": "Николаев",
+    "city": "",
     "voice": "1",
-    "spotify": "C:\\Users\\Alan Miller\\AppData\\Roaming\\Spotify\\Spotify.exe",
-    "telegram": "D:\\programm\\Telegram Desktop\\Telegram.exe",
-    "browser": "C:\\Users\\Alan Miller\\AppData\\Local\\Programs\\Opera GX\\launcher.exe",
-    "office": "D:\\programm\\WPS Office\\ksolaunch.exe"
+    "spotify": "",
+    "telegram": "",
+    "browser": "",
+    "office": ""
 }
