@@ -5,8 +5,8 @@ import os
 from kivy.app import App
 from kivy.config import Config
 Config.set('graphics', 'resizable', 0)
-Config.set('graphics', 'width', '300')
-Config.set('graphics', 'height', '440')
+Config.set('graphics', 'width', '500')
+Config.set('graphics', 'height', '700')
 from kivy.uix.button import Button
 from kivy.uix.label import Label
 from kivy.uix.textinput import TextInput
@@ -22,28 +22,28 @@ class KerolineApp(App):
 
     def build(self):
         main_bl = BoxLayout(orientation='vertical',
-                            padding=10,
-                            spacing=5)
+                            padding=20,
+                            spacing=10)
 
         setting_menu_content_bl = BoxLayout(orientation='vertical')
-        setting_menu = Popup(title='Настройки', content=setting_menu_content_bl, auto_dismiss=False)
+        setting_menu = Popup(title='Настройки', title_size=25, content=setting_menu_content_bl, auto_dismiss=False,)
 
         label_bl = BoxLayout(size_hint=(1, .06))
         text_bl = BoxLayout(size_hint=(1, .48))
-        send_bl = BoxLayout(size_hint=(1, .08), spacing=3)
-        speak_btn_bl = BoxLayout(size_hint=(1, .29), padding=(80, 4, 80, 4))
+        send_bl = BoxLayout(size_hint=(1, .08), spacing=8)
+        speak_btn_bl = BoxLayout(size_hint=(1, .29), padding=(140, 4, 140, 4))
         setting_btn_bl = BoxLayout(size_hint=(1, .09))
 
         name_label = Label(text='KEROLINE',
-                           font_size=30)
+                           font_size=60)
 
-        self.text_label = Label(text='Cлушаю!', font_size=20,
-                                text_size=(300 - 20, 400 * .4 - 20),
+        self.text_label = Label(text='Cлушаю!', font_size=30,
+                                text_size=(500 - 20, 700 * .4 - 20),
                                 valign='center',
                                 halign='center')
 
         self.send_input = TextInput(size_hint=(.8, 1),
-                                    font_size=15,
+                                    font_size=25,
                                     multiline=False)
 
         self.send_btn = Button(size_hint=(.13, 1),
@@ -55,7 +55,8 @@ class KerolineApp(App):
                                 background_down='..//img//mic_on.png',
                                 border=(0, 0, 0, 0))
 
-        self.setitng_btn = Button(text='Настройки')
+        self.setitng_btn = Button(text='Настройки',
+                                  font_size=20)
 
         label_bl.add_widget(name_label)
         text_bl.add_widget(self.text_label)
@@ -76,26 +77,26 @@ class KerolineApp(App):
         setting_menu_bl = BoxLayout(size_hint=(1, .9),
                                     orientation='vertical',
                                     padding=5,
-                                    spacing=1)
-        setting_menu_btn_bl = BoxLayout(size_hint=(1, .1))
+                                    spacing=5)
+        setting_menu_btn_bl = BoxLayout(size_hint=(1, .1), spacing=10)
 
-        self.city = TextInput(font_size=11, multiline=False, size_hint=(1, .27), text=main.Assistant.city)
-        self.path_spotify = TextInput(font_size=11,multiline=False, size_hint=(1, .27), text=main.Assistant.spotify)
-        self.path_telegram = TextInput(font_size=11, multiline=False, size_hint=(1, .27), text=main.Assistant.telegram)
-        self.path_browser = TextInput(font_size=11, multiline=False, size_hint=(1, .27), text=main.Assistant.browser)
-        self.path_office = TextInput(font_size=11, multiline=False, size_hint=(1, .27), text=main.Assistant.office)
-        self.voice_cb = CheckBox(size_hint=(1, .27))
+        self.city = TextInput(font_size=22, multiline=False, size_hint=(1, .27), text=main.Assistant.city)
+        self.path_spotify = TextInput(font_size=22, multiline=False, size_hint=(1, .27), text=main.Assistant.spotify)
+        self.path_telegram = TextInput(font_size=22, multiline=False, size_hint=(1, .27), text=main.Assistant.telegram)
+        self.path_browser = TextInput(font_size=22, multiline=False, size_hint=(1, .27), text=main.Assistant.browser)
+        self.path_office = TextInput(font_size=22, multiline=False, size_hint=(1, .27), text=main.Assistant.office)
+        self.voice_cb = CheckBox(size_hint=(1, .25))
         self.voice_cb.active = main.Assistant.voice
 
-        self.close_setting_btn = Button(text='Выйти')
-        self.save_setting_btn = Button(text='Сохранить')
+        self.close_setting_btn = Button(text='Выйти', font_size=25)
+        self.save_setting_btn = Button(text='Сохранить', font_size=25)
 
-        city_label = Label(text='Ваш город', font_size=12, size_hint=(1, .3), halign='left', text_size=(265, 20))
-        spotify_label = Label(text='Spotify', font_size=12, size_hint=(1, .3), halign='left', text_size=(265, 20))
-        telegram_label = Label(text='Telegram', font_size=12, size_hint=(1, .3), halign='left', text_size=(265, 20))
-        browser_label = Label(text='Браузер', font_size=12, size_hint=(1, .3), halign='left', text_size=(265, 20))
-        office_label = Label(text='Office', font_size=12, size_hint=(1, .3), halign='left', text_size=(265, 20))
-        voice_label = Label(text='Голос', font_size=15, size_hint=(1, .25))
+        city_label = Label(text='Ваш город', font_size=20, size_hint=(1, .3), halign='left', text_size=(455, 20))
+        spotify_label = Label(text='Spotify', font_size=20, size_hint=(1, .3), halign='left', text_size=(455, 20))
+        telegram_label = Label(text='Telegram', font_size=20, size_hint=(1, .3), halign='left', text_size=(455, 20))
+        browser_label = Label(text='Браузер', font_size=20, size_hint=(1, .3), halign='left', text_size=(455, 20))
+        office_label = Label(text='Office', font_size=20, size_hint=(1, .3), halign='left', text_size=(455, 20))
+        voice_label = Label(text='Голос', font_size=20, size_hint=(1, .15))
 
         setting_menu_bl.add_widget(city_label)
         setting_menu_bl.add_widget(self.city)

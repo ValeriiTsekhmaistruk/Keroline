@@ -108,8 +108,9 @@ class Commands:
             Assistant.answer = f'Я Кэролайн, ваш личный голосовой ассистент'
             Voice.say(f'Я Кэролайн, ваш личный голосовой ассистент')
         elif bool(set(command_key_words) & set(text)):
-            Assistant.answer = 'Затрудняюсь ответить, меня постоянно улучшают'
-            Voice.say('Затрудняюсь ответить, меня постоянно улучшают')
+            webbrowser.get().open('https://github.com/ValeriiTsekhmaistruk/Keroline-Voice-Assistant')
+            Assistant.answer = 'Всю информацию о моих возможностях вы можете найти здесь'
+            Voice.say('Всю информацию о моих возможностях вы можете найти здесь')
 
     @staticmethod
     def search_google(text):
@@ -136,9 +137,6 @@ class Commands:
         elif bool(set(full_date_word) & set(text)):
             Assistant.answer = time.strftime('%d.%m.%Y', time.localtime())
             Voice.say(time.strftime('%d/%m/%Y', time.localtime()))
-        elif 'число' in text:
-            Assistant.answer = time.strftime('%m.%d', time.localtime())
-            Voice.say(time.strftime('%m/%d', time.localtime()))
         elif 'день' in text:
             Assistant.answer = time.strftime('%A', time.localtime())
             Voice.say(time.strftime('%A', time.localtime()))
@@ -313,7 +311,7 @@ class KeyWord:
     communication = key_word(('привет', 'приветствую', 'пока', 'прощай', 'спасибо', 'благодарю', 'делаешь',
                               'умеешь', 'можешь', 'кто', 'ты'), Commands.communication)
     search_google = key_word(('найди', 'поищи'), Commands.search_google)
-    say_time = key_word(('время', 'времени', 'час', 'часов', 'дата', 'число', 'дату', 'день'), Commands.say_time)
+    say_time = key_word(('время', 'времени', 'час', 'часов', 'дата', 'дату', 'день'), Commands.say_time)
     get_weather = key_word(('погода', 'погоду', 'погоды', 'прогноз'), Commands.get_weather)
     simple_math = key_word(('+', '-', '*', '/', 'плюс', 'минус', 'умножь', 'умножить',
                             'подели', 'раздели', 'х', 'x'), Mathematics.simple_math)
