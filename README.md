@@ -1,4 +1,4 @@
-## Keroline - Russian-speaking Voice Assistant App Python for Windows
+# Keroline - Russian-speaking Voice Assistant App Python for Windows
 \
 ![ ](https://i.ibb.co/vhR78xh/image.png)
 
