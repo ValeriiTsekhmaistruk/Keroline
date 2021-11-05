@@ -3,15 +3,15 @@
 ![ ](https://i.ibb.co/vhR78xh/image.png)
 
 ### App features:
-* Recognize and synthesize speech
-* Play random greetings and goodbyes
-* Make a Google search
-* Get information about the weather forecast (the city is specified by default in the settings)
-* Run certain applications (Spotify, Telegram, Browser, Office) if you register the path to exe in the settings
-* Speak date and time
-* Perform simple math operations (sum, subtraction, multiplication, division, sqrt, exp)
-* Flip coin
-* Give a random answer when asked yes or no
+* Speech recognize and synthesize
+* Random greetings and goodbyes playback
+* Google search
+* Receiving information about the weather forecast (the city specified by default in the settings)
+* Executing certain applications (Spotify, Telegram, Browser, Office) if you set up the path to .exe in the settings
+* Date and time voice notification
+* Simple math operations (sum, subtraction, multiplication, division, sqrt, exp)
+* Coin flipping
+* Random answering when asked yes or no
 
 ### To install all dependencies use the command:
 `pip install --r requirements.txt`
@@ -20,10 +20,10 @@ If you got an error while installing PyAudio, then check availability of Microso
 `pip install pipwin` \
 `pipwin install pyaudio` 
 
-### To run the application, go go to directory ‘src’ and enter the command:
+### To run the application, go to directory ‘src’ and enter the command:
 `python app.py` 
 
-### Used third party libraries:
+### Used third-party libraries:
 Library  | Function
 ----------------|----------------------
 Kivy |Interface
