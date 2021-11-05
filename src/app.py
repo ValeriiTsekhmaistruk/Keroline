@@ -1,3 +1,13 @@
+#  -----------------------------------------------------------
+# Keroline Voice Assistant
+#
+# This module will render the interface
+#
+# GitHub:   https://github.com/ValeriiTsekhmaistruk/Keroline-Voice-Assistant
+# LinkedIn: linkedin.com/in/valeriitsekhmaistruk
+# Email:    valeriitseh1305@gmail.com
+# -----------------------------------------------------------
+
 import main
 import json
 import sys
@@ -118,24 +128,29 @@ class KerolineApp(App):
         setting_menu_content_bl.add_widget(setting_menu_btn_bl)
 
         def enter_on(instance):
+            # takes value from TextInput and call text_input() in main.py
             answer = main.input_text(instance.text.strip())
             if answer:
                 self.text_label.text = str(answer)
             instance.text = ''
 
         def send_btn_on(instance):
+            # takes value from TextInput and call text_input() in main.py
             answer = main.input_text(self.send_input.text.strip())
             if answer:
                 self.text_label.text = str(answer)
             self.send_input.text = ''
 
         def speak_btn_on(instance):
+            # call voice_input() in main.py
             answer = main.input_voice()
             if answer:
                 self.text_label.text = str(answer)
 
         def save_setting_btn_on(instance):
-            if self.voice_cb.active:
+            # takes value from TextInput and write in config.json
+
+            if self.voice_cb.active:    # on/off voice
                 voice_value = '1'
             else:
                 voice_value = ''
@@ -153,6 +168,7 @@ class KerolineApp(App):
             with open("config.json", "w", encoding='utf-8') as write_file:
                 json.dump(data, write_file, indent=4, ensure_ascii=False)
 
+            # restarting app.py to apply new parameters
             python = sys.executable
             os.execl(python, python, "\"{}\"".format(sys.argv[0]))
 

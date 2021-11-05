@@ -1,3 +1,19 @@
+#  -----------------------------------------------------------
+# Keroline Voice Assistant
+#
+# This module implements the functionality of the assistant
+#
+# Text_input() or voice_input is called from app.py then in search_command
+# starts searching by keywords and the required method is called from classes
+# Commands and Mathematics.
+#
+# Class Assistant contains parameters that are necessary for correct work of some methods.
+# Class Voice contains synthesis and recognition methods
+#
+# GitHub: https://github.com/ValeriiTsekhmaistruk/Keroline-Voice-Assistant
+# Email: valeriitseh1305@gmail.com
+# -----------------------------------------------------------
+
 import os
 import sys
 import webbrowser
@@ -9,14 +25,18 @@ import pyttsx3
 import threading
 import speech_recognition
 from collections import namedtuple
+import locale
+locale.setlocale(locale.LC_ALL, '')
 
 
 class Assistant:
+    # Reading assistant parameters from config.json
+
     with open("config.json", "r", encoding='utf-8') as file:
         data = json.load(file)
 
     city = data.get('city')
-    voice = bool(data.get('voice'))
+    voice = bool(data.get('voice'))     # on/off voice
 
     spotify = data.get('spotify')
     telegram = data.get('telegram')
@@ -34,10 +54,11 @@ class Assistant:
 
 
 class Voice:
+    # Speech recognize and synthesize
 
     @staticmethod
     def say(string):
-
+        # Speech synthesize
         def engine_start(text):
             if Assistant.voice:
                 engine = pyttsx3.init()
@@ -51,6 +72,7 @@ class Voice:
 
     @staticmethod
     def say_num(string):
+        # Speech synthesis for int and float
         if string % 1 != 0:
             result = round(string, 2)
             split_num = str(result).split('.')
@@ -60,6 +82,7 @@ class Voice:
 
     @staticmethod
     def listen():
+        # Capturing audio from a microphone and speech recognize
         mic = speech_recognition.Microphone()
         recognizer = speech_recognition.Recognizer()
 
@@ -86,6 +109,7 @@ class Commands:
 
     @staticmethod
     def communication(text):
+        # Method for communicating with the user
         hi_key_words = ('привет', 'приветствую')
         bye_key_words = ('пока', 'прощай')
         grat_key_words = ('спасибо', 'благодарю')
@@ -114,6 +138,7 @@ class Commands:
 
     @staticmethod
     def search_google(text):
+        # Google search
         if len(text) == 1:
             Assistant.answer = 'Что именно вы хотите найти?'
             Voice.say('Что именно вы хотите найти?')
@@ -128,13 +153,14 @@ class Commands:
 
     @staticmethod
     def say_time(text):
-        time_word = ('время', 'времени', 'час', 'часов')
-        full_date_word = ('дата', 'дату')
+        # Date and time voice notification
+        time_words = ('время', 'времени', 'час', 'часов')
+        date_words = ('дата', 'дату')
 
-        if bool(set(time_word) & set(text)):
+        if bool(set(time_words) & set(text)):
             Assistant.answer = time.strftime('%H:%M', time.localtime())
             Voice.say(time.strftime('%H:%M', time.localtime()))
-        elif bool(set(full_date_word) & set(text)):
+        elif bool(set(date_words) & set(text)):
             Assistant.answer = time.strftime('%d.%m.%Y', time.localtime())
             Voice.say(time.strftime('%d/%m/%Y', time.localtime()))
         elif 'день' in text:
@@ -143,8 +169,9 @@ class Commands:
 
     @staticmethod
     def get_weather(text):
+        # Searches google weather forecast
         black_list = ('покажи', 'прогноз', 'в', 'погода', 'погоду', 'погоды', 'пожалуйста', 'мне')
-        clear_text = list(filter(lambda item: item not in black_list, text))
+        clear_text = list(filter(lambda item: item not in black_list, text))    # deleting words that are in black_list
 
         if len(clear_text) == 0 and Assistant.city == '':
             Assistant.answer = 'Укажите город'
@@ -164,6 +191,7 @@ class Commands:
 
     @staticmethod
     def run_app(text):
+        # run app to path in config.json
         black_list = ('открой', 'запусти', 'пожалуйста', 'будь', 'добра')
         clear_text = list(filter(lambda item: item not in black_list, text))
 
@@ -180,7 +208,7 @@ class Commands:
 
             apps = (spotify, telegram, browser, office)
 
-            for app in apps:
+            for app in apps:    # search app by keyword
                 if clear_text[0] == app[0]:
                     if app[1] == '':
                         Assistant.answer = 'Приложение не установленно'
@@ -202,6 +230,7 @@ class Commands:
 
     @staticmethod
     def coin(x):
+        # Coin flipping
         flip = round(random.random())
 
         if flip == 1:
@@ -213,6 +242,7 @@ class Commands:
 
     @staticmethod
     def yes_or_no(x):
+        # Random answer yes or no
         rand_answer = round(random.random())
 
         if rand_answer == 1:
@@ -227,12 +257,13 @@ class Mathematics:
 
     @staticmethod
     def simple_math(text):
+        # Calculation sum, subtraction, multiplication and division
         multi_word = ('умнож', 'умножить', '*', 'х', 'x')
         div_word = ('подели', 'раздели', '/')
         sum_word = ('плюс', '+')
         sub_word = ('минус', '-')
         num = list(map(lambda x: x.replace(',', '.'), text))
-        num = list(map(float, filter(lambda x: x.replace('.', '').isdigit(), num)))
+        num = list(map(float, filter(lambda x: x.replace('.', '').isdigit(), num)))     # converting str to float
         if len(num) == 1:
             Assistant.answer = 'Не хватает аргумента'
             Voice.say('Не хватает аргумента')
@@ -266,6 +297,7 @@ class Mathematics:
 
     @staticmethod
     def math_sqrt(text):
+        # Calculation sqrt
         try:
             num = list(map(float, filter(lambda x: x.replace('.', '').isdigit(), text)))
             result = math.sqrt(num[0])
@@ -283,6 +315,7 @@ class Mathematics:
 
     @staticmethod
     def math_exp(text):
+        # Calculation exp
         try:
             num = list(map(float, filter(lambda x: x.replace('.', '').isdigit(), text)))
 
@@ -306,6 +339,7 @@ class Mathematics:
 
 
 class KeyWord:
+    # Keywords and their methods
     key_word = namedtuple('key_word', 'word func')
 
     communication = key_word(('привет', 'приветствую', 'пока', 'прощай', 'спасибо', 'благодарю', 'делаешь',
@@ -326,6 +360,7 @@ class KeyWord:
 
 
 def search_command(command):
+    # Keyword search in string and method call
     text = command.lower().split(" ")
     if text[0] == '':
         return
@@ -344,6 +379,7 @@ def search_command(command):
 
 
 def input_text(user_command):
+    # Call search_command
     if len(user_command.replace(' ', '')) == 0:
         return
     search_command(user_command)
@@ -351,6 +387,7 @@ def input_text(user_command):
 
 
 def input_voice():
+    # Speech recognize and call search_command
     user_command = Voice.listen()
     search_command(user_command)
     return Assistant.answer

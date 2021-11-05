@@ -2,7 +2,7 @@
 \
 ![ ](https://i.ibb.co/vhR78xh/image.png)
 
-### App features:
+ ### App features:
 * Speech recognize and synthesize
 * Random greetings and goodbyes playback
 * Google search
@@ -24,9 +24,9 @@ If you got an error while installing PyAudio, then check availability of Microso
 `python app.py` 
 
 ### Used third-party libraries:
-Library  | Function
-----------------|----------------------
-Kivy |Interface
-PyAudio | Capturing audio from a microphone
+Library           | Function
+------------------|----------------------
+Kivy              | Interface
+PyAudio           | Capturing audio from a microphone
 SpeechRecognition | Speech recognition
-pyttsx3	| Speech synthesis
+pyttsx3	          | Speech synthesis
