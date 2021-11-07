@@ -3,8 +3,8 @@
 #
 # This module will render the interface
 #
+# Author:   Valerii Tsekhmaistruk
 # GitHub:   https://github.com/ValeriiTsekhmaistruk/Keroline-Voice-Assistant
-# LinkedIn: linkedin.com/in/valeriitsekhmaistruk
 # Email:    valeriitseh1305@gmail.com
 # -----------------------------------------------------------
 
