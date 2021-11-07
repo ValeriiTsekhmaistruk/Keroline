@@ -10,6 +10,7 @@
 # Class Assistant contains parameters that are necessary for correct work of some methods.
 # Class Voice contains synthesis and recognition methods
 #
+# Author:   Valerii Tsekhmaistruk
 # GitHub: https://github.com/ValeriiTsekhmaistruk/Keroline-Voice-Assistant
 # Email: valeriitseh1305@gmail.com
 # -----------------------------------------------------------
